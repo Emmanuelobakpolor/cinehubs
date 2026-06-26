@@ -1,0 +1,49 @@
+name: cinehubs
+description: "Cinehubs - Every Story, One Destination."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  dio: ^5.8.0
+  shared_preferences: ^2.3.5
+  image_picker: ^1.1.2
+  media_kit: ^1.1.11
+  media_kit_video: ^1.2.5
+  media_kit_libs_android_video: ^1.3.4  # Android native decoders (hardware-accelerated)
+  media_kit_libs_ios_video: ^1.1.4      # iOS native decoders
+  path_provider: ^2.1.5
+  wakelock_plus: ^1.3.4
+  flutter_inappwebview: ^6.1.5
+  url_launcher: ^6.3.0
+  firebase_core: ^3.13.1
+  firebase_messaging: ^15.2.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/3cc6fce607ac4d25744e2645eb35bcafb9dc5e19.png"
+  adaptive_icon_background: "#1A1A1A"
+  adaptive_icon_foreground: "lib/assets/3cc6fce607ac4d25744e2645eb35bcafb9dc5e19.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+  web:
+    generate: false
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - lib/assets/
