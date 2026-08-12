@@ -14,7 +14,7 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
 
 class FCMService {
   static const String _base =
-      'https://web-production-a39f0a.up.railway.app/api/notifications';
+      'https://web-production-3fa8c.up.railway.app/api/notifications';
 
   static final Dio _dio = Dio(BaseOptions(
     connectTimeout: const Duration(seconds: 10),

@@ -5,7 +5,7 @@ import 'storage_service.dart';
 
 class NotificationService {
   static const String _base =
-      'https://web-production-a39f0a.up.railway.app/api/notifications';
+      'https://web-production-3fa8c.up.railway.app/api/notifications';
   static const String _readKey = 'read_notification_ids';
 
   static final Dio _dio = Dio(BaseOptions(

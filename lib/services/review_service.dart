@@ -39,7 +39,7 @@ class ReviewException implements Exception {
 }
 
 class ReviewService {
-  static const String _base = 'https://web-production-a39f0a.up.railway.app/api/reviews';
+  static const String _base = 'https://web-production-3fa8c.up.railway.app/api/reviews';
 
   static final Dio _dio = Dio(BaseOptions(
     connectTimeout: const Duration(seconds: 15),

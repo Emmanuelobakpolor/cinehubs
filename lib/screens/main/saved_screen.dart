@@ -14,7 +14,7 @@ class SavedScreen extends StatefulWidget {
 }
 
 class SavedScreenState extends State<SavedScreen> {
-  static const String _base = 'https://web-production-a39f0a.up.railway.app/api';
+  static const String _base = 'https://web-production-3fa8c.up.railway.app/api';
   static final Dio _dio = Dio();
 
   List<_SavedEntry> _saved = [];
