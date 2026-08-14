@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:dio/dio.dart';
 import 'storage_service.dart';
@@ -8,6 +9,12 @@ import 'storage_service.dart';
 // when a data-only message arrives while the app is in background/killed.
 @pragma('vm:entry-point')
 Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
+  // Background messages run in a separate Dart isolate. Initialization from
+  // main() is not shared with it, so Firebase must be initialized here too.
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp();
+  }
+
   // FCM automatically shows the notification UI when the app is in background.
   // Nothing extra needed here for display-type messages.
 }

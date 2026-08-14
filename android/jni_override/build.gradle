@@ -1,0 +1,51 @@
+import groovy.json.JsonSlurper
+
+// Flutter's generated plugin metadata supplies the installed package location.
+def pluginMetadata = new JsonSlurper().parse(rootProject.file("../.flutter-plugins-dependencies"))
+def jniPackage = pluginMetadata.plugins.android.find { it.name == "jni" }?.path
+if (jniPackage == null) {
+    throw new GradleException("The jni Flutter plugin was not found in .flutter-plugins-dependencies")
+}
+
+group "com.github.dart_lang.jni"
+version "1.0"
+
+apply plugin: "com.android.library"
+
+android {
+    namespace "com.github.dart_lang.jni"
+    compileSdk 35
+    ndkVersion "29.0.14033849"
+
+    defaultConfig {
+        minSdk 21
+        consumerProguardFiles "${jniPackage}android/consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile "${jniPackage}android/src/main/AndroidManifest.xml"
+            java.srcDirs(
+                "${jniPackage}android/src/main/java",
+                "${jniPackage}java/src/main/java",
+            )
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "${jniPackage}src/CMakeLists.txt"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}

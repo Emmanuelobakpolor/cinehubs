@@ -10,7 +10,7 @@ class AuthException implements Exception {
 }
 
 class AuthService {
-  static const String _baseUrl = 'https://web-production-3fa8c.up.railway.app/api/users';
+  static const String _baseUrl = 'https://web-production-a39f0a.up.railway.app/api/users';
 
   static final Dio _dio = Dio(BaseOptions(
     baseUrl: _baseUrl,
