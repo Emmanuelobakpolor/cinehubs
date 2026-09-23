@@ -349,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // ─────────────────────────────────────────────
-// Netflix-style Full-Screen Categories Page
+// Full-Screen Categories Page
 // ─────────────────────────────────────────────
 
 class _CategoriesPage extends StatefulWidget {

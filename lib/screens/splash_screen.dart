@@ -253,7 +253,7 @@ class _SplashScreenState extends State<SplashScreen>
 
                         // Tagline
                         Text(
-                          'Every Story · One Destination',
+                          'Nollywood & Beyond, On Demand',
                           style: TextStyle(
                             fontSize: 13,
                             color: AppColors.textGrey,
