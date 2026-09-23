@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,31 +10,47 @@ import 'services/fcm_service.dart';
 
 final themeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
 
-  // Initialise Firebase and register the background message handler.
-  await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
-
-  // When user taps a notification while app is in background (not killed),
-  // mark the pending tap so HomeScreen can open the notifications screen.
-  FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    FCMService.markNotificationTapped();
-  });
-
-  // When user taps a notification that launched the app from killed state.
-  final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-  if (initialMessage != null) {
-    FCMService.markNotificationTapped();
-  }
-
-  // Initialise FCM (request permission + upload token).
-  // If the user isn't logged in yet, registerAfterLogin() handles the token upload.
-  await FCMService.initialize();
-
+  // Render the app immediately. Firebase/FCM setup can request permission or
+  // fail because of a device configuration issue; neither should prevent the
+  // user from seeing the app.
   runApp(const CinehubsApp());
+  unawaited(_initializeFirebaseAndMessaging());
+}
+
+Future<void> _initializeFirebaseAndMessaging() async {
+  try {
+    // Give native startup a bounded amount of time, rather than leaving the
+    // app at its native white launch screen indefinitely.
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp().timeout(const Duration(seconds: 10));
+    }
+
+    FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
+
+    // When user taps a notification while app is in background (not killed),
+    // mark the pending tap so HomeScreen can open the notifications screen.
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      FCMService.markNotificationTapped();
+    });
+
+    // When user taps a notification that launched the app from killed state.
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      FCMService.markNotificationTapped();
+    }
+
+    // Initialise FCM (request permission + upload token). If the user isn't
+    // logged in yet, registerAfterLogin() handles the token upload.
+    await FCMService.initialize();
+  } catch (error, stackTrace) {
+    // Notifications are optional. Keep the app usable if Firebase setup fails.
+    debugPrint('Firebase/FCM initialization failed: $error');
+    debugPrintStack(stackTrace: stackTrace);
+  }
 }
 
 class CinehubsApp extends StatelessWidget {

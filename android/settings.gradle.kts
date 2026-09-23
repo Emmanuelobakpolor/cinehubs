@@ -25,3 +25,6 @@ plugins {
 }
 
 include(":app")
+
+// Use a project-local Android build definition for jni so it shares the app's NDK.
+project(":jni").projectDir = file("jni_override")
