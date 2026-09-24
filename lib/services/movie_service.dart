@@ -3,7 +3,7 @@ import 'storage_service.dart';
 import '../models/api_movie.dart';
 
 class MovieService {
-  static const String _base = 'https://web-production-3fa8c.up.railway.app/api/movies';
+  static const String _base = 'https://cinehubsbackend-production.up.railway.app/api/movies';
 
   static final Dio _dio = Dio(BaseOptions(
     connectTimeout: const Duration(seconds: 15),

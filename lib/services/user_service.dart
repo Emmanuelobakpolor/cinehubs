@@ -52,7 +52,7 @@ class UserProfile {
 }
 
 class UserService {
-  static const String _baseUrl = 'https://web-production-3fa8c.up.railway.app/api/users';
+  static const String _baseUrl = 'https://cinehubsbackend-production.up.railway.app/api/users';
 
   static final Dio _dio = Dio(BaseOptions(
     baseUrl: _baseUrl,

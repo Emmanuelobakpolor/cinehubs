@@ -8,7 +8,7 @@ class PaymentException implements Exception {
 
 class PaymentService {
   // Update this to your production URL
-  static const String _base = 'https://web-production-3fa8c.up.railway.app/api/payments';
+  static const String _base = 'https://cinehubsbackend-production.up.railway.app/api/payments';
 
   static final Dio _dio = Dio(BaseOptions(
     connectTimeout: const Duration(seconds: 15),

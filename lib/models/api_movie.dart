@@ -1,4 +1,4 @@
-const String kMediaBase = 'https://web-production-3fa8c.up.railway.app';
+const String kMediaBase = 'https://cinehubsbackend-production.up.railway.app';
 
 String buildMediaUrl(dynamic path) {
   if (path == null || path.toString().isEmpty) return '';
