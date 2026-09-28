@@ -204,7 +204,7 @@ _SettingsItem(
 
             Center(
               child: Text(
-                'Cinehubs v2.4.1 • 2026',
+                'Cinehubs v1.0.1 • 2026',
                 style: TextStyle(
                   color: theme.textSecondary.withAlpha(180),
                   fontSize: 12,
