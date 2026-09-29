@@ -34,7 +34,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
   // Access control
   bool _accessLoading = true;
   bool _hasAccess = false;
-  String _paymentAmount = '200.00';
+  String _paymentAmount = '1000.00';
   String _downloadUrl = '';
   bool _isDownloaded = false;
   bool _downloadLoading = false;

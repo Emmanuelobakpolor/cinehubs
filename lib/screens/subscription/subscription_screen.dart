@@ -72,7 +72,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             ),
             const SizedBox(height: 8),
             const Text(
-              'With the Basic plan you pay ₦200 per movie. Simply browse, find a movie you want, tap Download — you\'ll be charged per movie at that point.',
+              'With the Basic plan you pay ₦1,000 per movie. Simply browse, find a movie you want, tap Download — you\'ll be charged per movie at that point.',
               style: TextStyle(
                   fontSize: 13, color: AppColors.textGrey, height: 1.5),
             ),
@@ -276,10 +276,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 // Basic plan
                 _PlanCard(
                   title: 'BASIC',
-                  price: '₦200',
+                  price: '₦1,000',
                   period: '/ movie',
                   description:
-                      "Pay per movie — no monthly commitment. ₦200 charged at download time.",
+                      "Pay per movie — no monthly commitment. ₦1,000 charged at download time.",
                   features: const [
                     '1080p High Definition',
                     '1 concurrent stream',

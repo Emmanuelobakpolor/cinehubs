@@ -114,7 +114,7 @@ class MovieService {
   /// Check whether the current user can play/download [movieId].
   ///
   /// Returns `(allowed: true, ...)` for PREMIUM users or BASIC users who have
-  /// already paid for this movie. Returns `(allowed: false, amount: '200.00')`
+  /// already paid for this movie. Returns `(allowed: false, amount: '1000.00')`
   /// when payment is required.
   static Future<({bool allowed, String amount, String downloadUrl})>
       checkDownloadAccess(int movieId) async {
@@ -129,7 +129,7 @@ class MovieService {
     } on DioException catch (e) {
       if (e.response?.statusCode == 402) {
         final amount =
-            e.response?.data['amount']?.toString() ?? '200.00';
+            e.response?.data['amount']?.toString() ?? '1000.00';
         return (allowed: false, amount: amount, downloadUrl: '');
       }
       rethrow;
