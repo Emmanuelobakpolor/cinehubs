@@ -20,14 +20,18 @@ class PaymentService {
     return Options(headers: {'Authorization': 'Bearer $token'});
   }
 
-  /// Initiates payment for [planId].
+  static const String planBasic = 'BASIC';
+  static const String planPremium = 'PREMIUM';
+
+  /// Initiates payment for [planName] ([planBasic] or [planPremium]).
+  /// Plans are sent by name because database ids can differ between deploys.
   /// Returns the payment link to open in webview.
-  static Future<String> initiatePayment(int planId) async {
+  static Future<String> initiatePayment(String planName) async {
     final opts = await _authOptions();
     try {
       final res = await _dio.post(
         '$_base/initiate/',
-        data: {'plan_id': planId},
+        data: {'plan_name': planName},
         options: opts,
       );
 

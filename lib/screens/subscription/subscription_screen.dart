@@ -124,7 +124,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     setState(() => _loading = true);
     try {
       // Step 1: initiate payment and get payment link
-      final paymentLink = await PaymentService.initiatePayment(2);
+      final paymentLink = await PaymentService.initiatePayment(PaymentService.planPremium);
 
       if (!mounted) return;
 

@@ -253,7 +253,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
           Navigator.pop(context); // dismiss paywall sheet
           setState(() => _accessLoading = true);
           try {
-            final paymentLink = await PaymentService.initiatePayment(1); // BASIC plan
+            final paymentLink = await PaymentService.initiatePayment(PaymentService.planBasic);
             final txRef = await PaymentService.getPendingTxRef() ?? '';
             if (!mounted || txRef.isEmpty) return;
 
