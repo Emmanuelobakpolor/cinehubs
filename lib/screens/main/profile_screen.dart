@@ -4,6 +4,7 @@ import '../../app_theme.dart';
 import '../../main.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
+import '../auth/otp_screen.dart';
 import '../auth/signin_screen.dart';
 import '../profile/edit_profile_screen.dart';
 import '../profile/settings_screen.dart';
@@ -369,6 +370,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 );
               },
             ),
+
+            // ── Verify email prompt ──
+            if (_profile != null && !_profile!.isEmailVerified) ...[
+              const SizedBox(height: 16),
+              InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => OtpScreen(
+                      contact: _profile!.email,
+                      isSignup: true,
+                      sendOnOpen: true,
+                    ),
+                  ),
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.red.withValues(alpha: 0.4)),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.mark_email_unread_outlined, color: Colors.red),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          "Your email isn't verified yet. Verify now to keep using Cinehubs.",
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ),
+                      Icon(Icons.chevron_right, color: Colors.red),
+                    ],
+                  ),
+                ),
+              ),
+            ],
 
             const SizedBox(height: 20),
 

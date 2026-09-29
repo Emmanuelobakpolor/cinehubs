@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../app_colors.dart';
 import '../services/fcm_service.dart';
 import '../services/storage_service.dart';
+import '../services/user_service.dart';
+import 'auth/otp_screen.dart';
 import 'onboarding_screen.dart';
 import 'main/main_screen.dart';
 
@@ -80,13 +82,27 @@ class _SplashScreenState extends State<SplashScreen>
       if (!mounted) return;
       final isLoggedIn = await StorageService.hasTokens();
       if (isLoggedIn) FCMService.registerAfterLogin();
+
+      // Logged-in but unverified users go straight to the OTP screen. If the
+      // profile can't be loaded (e.g. offline), fall through to the app.
+      UserProfile? profile;
+      if (isLoggedIn) {
+        try {
+          profile = await UserService.getProfile();
+        } catch (_) {}
+      }
       if (!mounted) return;
+      final Widget next;
+      if (!isLoggedIn) {
+        next = const OnboardingScreen();
+      } else if (profile != null && !profile.isEmailVerified) {
+        next = OtpScreen(contact: profile.email, isSignup: true, sendOnOpen: true);
+      } else {
+        next = const MainScreen();
+      }
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) =>
-              isLoggedIn ? const MainScreen() : const OnboardingScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => next),
       );
     });
   }

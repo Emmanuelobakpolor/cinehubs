@@ -6,6 +6,7 @@ import '../../services/storage_service.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 import '../main/main_screen.dart';
+import 'otp_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -53,9 +54,15 @@ class _SignInScreenState extends State<SignInScreen> {
       FCMService.registerAfterLogin();
 
       if (!mounted) return;
+      // Unverified accounts must confirm their email before using the app.
+      final verified = data['is_email_verified'] != false;
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const MainScreen()),
+        MaterialPageRoute(
+          builder: (_) => verified
+              ? const MainScreen()
+              : OtpScreen(contact: email, isSignup: true, sendOnOpen: true),
+        ),
         (route) => false,
       );
     } on AuthException catch (e) {

@@ -8,11 +8,15 @@ import 'create_password_screen.dart';
 class OtpScreen extends StatefulWidget {
   final String contact; // displayed to user (email or phone)
   final bool isSignup;
+  /// Send a fresh code when the screen opens (used when an existing but
+  /// unverified user is sent here after login or from their profile).
+  final bool sendOnOpen;
 
   const OtpScreen({
     super.key,
     required this.contact,
     required this.isSignup,
+    this.sendOnOpen = false,
   });
 
   @override
@@ -33,6 +37,11 @@ class _OtpScreenState extends State<OtpScreen> {
   void initState() {
     super.initState();
     _startTimer();
+    if (widget.sendOnOpen) {
+      AuthService.resendEmailOtp().catchError((Object e) {
+        if (mounted) setState(() => _errorMessage = e.toString());
+      });
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNodes[0].requestFocus();
     });
