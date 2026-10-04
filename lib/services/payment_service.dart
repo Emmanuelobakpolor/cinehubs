@@ -4,6 +4,9 @@ import 'storage_service.dart';
 class PaymentException implements Exception {
   final String message;
   PaymentException(this.message);
+
+  @override
+  String toString() => message;
 }
 
 class PaymentService {
