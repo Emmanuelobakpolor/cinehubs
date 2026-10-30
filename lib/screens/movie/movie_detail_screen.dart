@@ -8,6 +8,8 @@ import '../../services/download_service.dart';
 import '../../services/movie_service.dart';
 import '../../services/payment_service.dart';
 import '../../services/review_service.dart';
+import '../../services/storage_service.dart';
+import '../auth/account_prompt.dart';
 import '../payment/payment_completion_screen.dart';
 import '../player/video_player_screen.dart';
 import '../subscription/subscription_screen.dart';
@@ -50,6 +52,17 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
   bool _trailerMuted = true;
   bool _trailerPaused = false;
   bool _showPauseIcon = false;
+
+  /// Guests can browse details and trailers; playing, downloading, saving
+  /// and rating need an account.
+  bool get _isGuest => !StorageService.loggedIn.value;
+
+  Future<bool> _requireAccount() => requireAccount(
+        context,
+        title: 'Sign up to watch',
+        message:
+            'Create a free account to watch and download ${widget.movie.title} and the rest of Cinehubs.',
+      );
 
   String get _effectiveTrailerUrl {
     if (widget.movie.thrillerClipUrl.isNotEmpty) return widget.movie.thrillerClipUrl;
@@ -115,6 +128,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
   }
 
   Future<void> _checkAccess() async {
+    if (_isGuest) {
+      setState(() {
+        _hasAccess = false;
+        _accessLoading = false;
+      });
+      return;
+    }
     setState(() => _accessLoading = true);
     try {
       final result =
@@ -228,7 +248,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
     DownloadService.pauseDownload(widget.movie.id);
   }
 
-  void _showPaywall() {
+  Future<void> _showPaywall() async {
+    if (!await _requireAccount()) return;
+    if (!mounted) return;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -325,6 +347,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
 
   Future<void> _toggleSave() async {
     if (_savingInProgress) return;
+    if (!await _requireAccount()) return;
     setState(() => _savingInProgress = true);
     try {
       if (_isSaved) {
@@ -349,7 +372,15 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
     }
   }
 
-  void _showRatingSheet() {
+  Future<void> _showRatingSheet() async {
+    if (!await requireAccount(
+      context,
+      title: 'Sign up to rate',
+      message: 'Create a free account to rate and review movies.',
+    )) {
+      return;
+    }
+    if (!mounted) return;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -813,7 +844,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
                                   ),
                                 )
                               : Icon(
-                                  _hasAccess
+                                  (_hasAccess || _isGuest)
                                       ? Icons.play_arrow
                                       : Icons.lock_outline,
                                   size: 20,
@@ -868,7 +899,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
                                           ? Icons.download_done
                                           : _isDownloadPaused
                                               ? Icons.play_arrow
-                                              : (_hasAccess
+                                              : ((_hasAccess || _isGuest)
                                                   ? Icons.download
                                                   : Icons.lock_outline),
                                       size: 20,

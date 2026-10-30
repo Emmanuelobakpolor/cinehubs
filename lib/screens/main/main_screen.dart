@@ -1,6 +1,8 @@
 import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 import '../../app_colors.dart';
+import '../../services/storage_service.dart';
+import '../auth/account_prompt.dart';
 import 'home_screen.dart';
 import 'saved_screen.dart';
 import 'watch_history_screen.dart';
@@ -24,13 +26,41 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _screens = [
-      const HomeScreen(),
-      SavedScreen(key: _savedKey),
-      const WatchHistoryScreen(),
-      const DownloadsScreen(),
-      const ProfileScreen(),
-    ];
+    // Signing in or up resets the app to a fresh MainScreen, so the guest
+    // check only needs to happen once here.
+    _screens = StorageService.loggedIn.value
+        ? [
+            const HomeScreen(),
+            SavedScreen(key: _savedKey),
+            const WatchHistoryScreen(),
+            const DownloadsScreen(),
+            const ProfileScreen(),
+          ]
+        : const [
+            HomeScreen(),
+            GuestPlaceholder(
+              icon: Icons.bookmark_rounded,
+              title: 'Save movies for later',
+              message: 'Sign up to build your list of movies to watch next.',
+            ),
+            GuestPlaceholder(
+              icon: Icons.play_circle_fill_rounded,
+              title: 'Pick up where you left off',
+              message: 'Sign up to keep track of what you watch.',
+            ),
+            GuestPlaceholder(
+              icon: Icons.download_rounded,
+              title: 'Watch offline',
+              message: 'Sign up to download movies and watch them anywhere.',
+            ),
+            GuestPlaceholder(
+              icon: Icons.person_rounded,
+              title: 'Your Cinehubs account',
+              message:
+                  'Sign up or sign in to manage your profile and subscription.',
+              showLegalLinks: true,
+            ),
+          ];
   }
 
   final List<Map<String, dynamic>> _navItems = [

@@ -5,7 +5,7 @@ import '../../main.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../auth/otp_screen.dart';
-import '../auth/signin_screen.dart';
+import 'main_screen.dart';
 import '../profile/edit_profile_screen.dart';
 import '../profile/settings_screen.dart';
 import '../profile/customer_support_screen.dart';
@@ -93,9 +93,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (confirmed != true) return;
     await AuthService.logout();
     if (!mounted) return;
+    // Back to browsing as a guest.
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (_) => const SignInScreen()),
+      MaterialPageRoute(builder: (_) => const MainScreen()),
       (route) => false,
     );
   }

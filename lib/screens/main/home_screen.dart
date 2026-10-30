@@ -9,6 +9,8 @@ import '../../models/app_notification.dart';
 import '../../services/fcm_service.dart';
 import '../../services/movie_service.dart';
 import '../../services/notification_service.dart';
+import '../../services/storage_service.dart';
+import '../auth/account_prompt.dart';
 import '../movie/movie_detail_screen.dart';
 import '../browse/browse_screen.dart';
 import '../notifications/notifications_screen.dart';
@@ -101,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _pollNotifications() async {
+    if (!StorageService.loggedIn.value) return;
     try {
       final notifications = await NotificationService.fetchMyNotifications();
       if (!mounted) return;
@@ -162,6 +165,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _openNotifications() async {
+    if (!await requireAccount(
+      context,
+      title: 'Stay in the loop',
+      message: 'Sign up to get notified about new releases on Cinehubs.',
+    )) {
+      return;
+    }
+    if (!mounted) return;
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const NotificationsScreen()),

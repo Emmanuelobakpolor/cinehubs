@@ -10,10 +10,8 @@ class MovieService {
     receiveTimeout: const Duration(seconds: 15),
   ));
 
-  static Future<Options> _authOptions() async {
-    final token = await StorageService.getAccessToken();
-    return Options(headers: {'Authorization': 'Bearer $token'});
-  }
+  static Future<Options> _authOptions() async =>
+      Options(headers: await StorageService.authHeaders());
 
   /// Fetch all movies, optionally filtered by category ID.
   static Future<List<ApiMovie>> fetchMovies({int? categoryId}) async {

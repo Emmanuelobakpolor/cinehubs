@@ -46,10 +46,8 @@ class ReviewService {
     receiveTimeout: const Duration(seconds: 15),
   ));
 
-  static Future<Options> _authOptions() async {
-    final token = await StorageService.getAccessToken();
-    return Options(headers: {'Authorization': 'Bearer $token'});
-  }
+  static Future<Options> _authOptions() async =>
+      Options(headers: await StorageService.authHeaders());
 
   /// Fetch reviews for a movie.
   static Future<List<ReviewItem>> fetchReviews(int movieId) async {
