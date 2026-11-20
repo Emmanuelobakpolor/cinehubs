@@ -9,7 +9,7 @@ plugins {
 android {
     namespace = "com.example.cinehubs"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "29.0.14033849"
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
